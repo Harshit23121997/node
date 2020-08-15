@@ -15,7 +15,7 @@ var Shopify = new shopifyAPI({
     shopify_api_key: '02e5684c4c3632e474970c31119aa8b4', // Your API key
     access_token: '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' // Your API password
 });
-app.use(bodyParser());
+app.use(bodyParser.json()); 
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
