@@ -8,6 +8,24 @@ const nonce = require('nonce')();
 const querystring = require('querystring');
 const request = require('request-promise');
 const bodyParser = require('body-parser');
+var jwt = require('express-jwt');
+var jwks = require('jwks-rsa');
+const cors = require('cors');
+
+app.use(cors());
+var jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: 'https://dev-vkd40bfr.us.auth0.com/.well-known/jwks.json'
+}),
+audience: 'http://15.207.137.254',
+issuer: 'https://dev-vkd40bfr.us.auth0.com/',
+algorithms: ['RS256']
+});
+
+app.use(jwtCheck);
 
 
 var Shopify = new shopifyAPI({
@@ -17,6 +35,7 @@ var Shopify = new shopifyAPI({
 });
 app.use(bodyParser.json()); 
 app.get('/', (req, res) => {
+    console.log("Here")
     res.send('Hello World!');
 });
 
