@@ -47,7 +47,7 @@ app.post('/postOrder',(req,res)=>{
           "line_items": [
             {
               "variant_id": req.body.variant_id,
-              "quantity": 1
+              "quantity": req.body.quantity
             }
           ],
           "customer":{
