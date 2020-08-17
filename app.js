@@ -46,7 +46,7 @@ app.post('/postOrder',(req,res)=>{
         "order": {
           "line_items": [
             {
-              "variant_id": 31666325782588,
+              "variant_id": req.body.variant_id,
               "quantity": 1
             }
           ],
