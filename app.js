@@ -8,24 +8,14 @@ const nonce = require('nonce')();
 const querystring = require('querystring');
 const request = require('request-promise');
 const bodyParser = require('body-parser');
-var jwt = require('express-jwt');
+var jwt = require('jsonwebtoken');
 var jwks = require('jwks-rsa');
 const cors = require('cors');
 
 app.use(cors());
-var jwtCheck = jwt({
-  secret: jwks.expressJwtSecret({
-      cache: true,
-      rateLimit: true,
-      jwksRequestsPerMinute: 5,
-      jwksUri: 'https://dev-vkd40bfr.us.auth0.com/.well-known/jwks.json'
-}),
-audience: 'http://15.207.137.254',
-issuer: 'https://dev-vkd40bfr.us.auth0.com/',
-algorithms: ['RS256']
-});
+app.use(express.json())
 
-app.use(jwtCheck);
+
 
 
 var Shopify = new shopifyAPI({
@@ -36,6 +26,7 @@ var Shopify = new shopifyAPI({
 app.use(bodyParser.json()); 
 app.get('/', (req, res) => {
     console.log("Here")
+    
     res.send('Hello World!');
 });
 
@@ -46,8 +37,9 @@ app.post('/postOrder',(req,res)=>{
         "order": {
           "line_items": [
             {
-              "variant_id": req.body.variant_id,
-              "quantity": req.body.quantity
+              "variant_id": 31841425653820,
+              "price": 99.99,
+              "quantity":2
             }
           ],
           "customer":{
@@ -69,7 +61,11 @@ app.post('/postOrder',(req,res)=>{
           "fulfillment_status": "unfulfilled"
         }
       }
-    
+      const bearer=req.headers['authorization'];
+      if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+        res.sendStatus(403)
+        return
+      }
     Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
         if(err){
             console.log(err)
@@ -79,8 +75,20 @@ app.post('/postOrder',(req,res)=>{
         res.send({"status":"Success"});
         return;
       });
+    res.sendStatus(200)
     return;
 })
+function verifyToken(req,res,next){
+  const bearer=req.headers['authorization'];
+  if(typeof bearer !== 'undefined'){
+    console.log(bearer[0])
+    return true
+  }
+  else{
+    console.log("Here")
+    res.sendStatus(403)
+  }
+}
 const port=process.env.port||3000;
 app.listen(port, () => {
     console.log('Example app listening on port'+port);
