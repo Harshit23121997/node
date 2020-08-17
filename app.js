@@ -75,7 +75,7 @@ app.post('/postOrder',(req,res)=>{
         res.send({"status":"Success"});
         return;
       });
-    res.sendStatus(200)
+    res.send({"status":"Success"});
     return;
 })
 function verifyToken(req,res,next){
