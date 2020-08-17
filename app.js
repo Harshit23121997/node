@@ -30,6 +30,55 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+app.post('/postOrder/32250324058172',(req,res)=>{
+  
+  console.log(req.body)
+  order_data={
+      "order": {
+        "line_items": [
+          {
+            "variant_id": 32250324058172,
+            "price": req.body.order_sales_value,
+            "quantity":1
+          }
+        ],
+        "customer":{
+          "first_name":req.body.customer_name,
+          "last_name":"NA"
+        },
+        "shipping_address": {
+          "first_name": req.body.customer_name,
+          "last_name": "NA",
+          "address1":req.body.shipping_address_line1,
+          "address2": req.body.shipping_address_line2,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "email":req.body.shipping_address_email,
+        "fulfillment_status": "unfulfilled"
+      }
+    }
+    const bearer=req.headers['authorization'];
+    if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+      res.sendStatus(403)
+      return
+    }
+  Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
+      if(err){
+          console.log(err)
+          return;
+
+      }
+      res.send({"status":"Success"});
+      return;
+    });
+  res.send({"status":"Success"});
+  return;
+})
+
 app.post('/postOrder',(req,res)=>{
   
     console.log(req.body)
@@ -37,9 +86,9 @@ app.post('/postOrder',(req,res)=>{
         "order": {
           "line_items": [
             {
-              "variant_id": 31841425653820,
-              "price": 99.99,
-              "quantity":2
+              "variant_id": 32250224312380,
+              "price": req.body.order_sales_value,
+              "quantity":1
             }
           ],
           "customer":{
@@ -78,17 +127,7 @@ app.post('/postOrder',(req,res)=>{
     res.send({"status":"Success"});
     return;
 })
-function verifyToken(req,res,next){
-  const bearer=req.headers['authorization'];
-  if(typeof bearer !== 'undefined'){
-    console.log(bearer[0])
-    return true
-  }
-  else{
-    console.log("Here")
-    res.sendStatus(403)
-  }
-}
+
 const port=process.env.port||3000;
 app.listen(port, () => {
     console.log('Example app listening on port'+port);
