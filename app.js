@@ -64,7 +64,7 @@ app.post('/postOrder/32250324058172',(req,res)=>{
     const bearer=req.headers['authorization'];
     if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
       res.sendStatus(403)
-      return
+      return;
     }
   Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
       if(err){
@@ -72,14 +72,21 @@ app.post('/postOrder/32250324058172',(req,res)=>{
           return;
 
       }
-      res.send({"status":"Success"});
+      else{
+        res.send({"status":"Success"});
       return;
+      }
+      
     });
-  res.send({"status":"Success"});
   return;
-})
+});
 
-app.post('/postOrder',(req,res)=>{
+app.post('/postOrder/32250224312380',(req,res)=>{
+  const bearer=req.headers['authorization'];
+      if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+        res.sendStatus(403);
+        return;
+      }
   
     console.log(req.body)
     order_data={
@@ -110,21 +117,17 @@ app.post('/postOrder',(req,res)=>{
           "fulfillment_status": "unfulfilled"
         }
       }
-      const bearer=req.headers['authorization'];
-      if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
-        res.sendStatus(403)
-        return
-      }
-    Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
-        if(err){
-            console.log(err)
-            return;
-
+      
+    Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data){
+        if(!err){
+          res.send({"status":"Success"});
+          return;
         }
-        res.send({"status":"Success"});
-        return;
+        else{
+          console.log("Here")
+        }
+        
       });
-    res.send({"status":"Success"});
     return;
 })
 
