@@ -48,7 +48,7 @@ app.post('/postOrder/32250324058172',(req,res)=>{
         },
         "shipping_address": {
           "first_name": req.body.customer_name,
-          "last_name": "NA",
+          "last_name": "",
           "address1":req.body.shipping_address_line1,
           "address2": req.body.shipping_address_line2,
           "phone": req.body.shipping_address_phone,
