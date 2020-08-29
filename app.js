@@ -29,6 +29,38 @@ app.get('/', (req, res) => {
     
     res.send('Hello World!');
 });
+app.get('/orderDetails/:order_id',(req,res)=>{
+
+  console.log(req.params.order_id)
+  url='/admin/api/2020-07/orders.json?name='+req.params.order_id;
+  console.log(url)
+  Shopify.get(url, function(err, data, headers){
+    if(err){
+        console.log(err)
+        res.send(" Error Here")
+        return ;
+
+    }
+    else{
+      console.log(data)
+      if(data.orders!=undefined && req.params.order_id.length==6)
+      {
+        if(data.orders[0].fulfillment_status)
+          res.send({"status":data.orders[0].fulfillment_status});
+        else
+          res.send({"status":"unfulfilled"})
+      }   
+      else{
+        res.send({"status":"Not Valid Order Number"})
+      }
+        
+      return;
+    }
+    
+  });
+  
+  return "Not here";
+});
 
 app.post('/postOrder/32250324058172',(req,res)=>{
   
