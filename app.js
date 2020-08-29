@@ -24,14 +24,11 @@ var Shopify = new shopifyAPI({
     access_token: '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' // Your API password
 });
 app.use(bodyParser.json()); 
-app.use(function(req, res, next) {
-
-  res.header("Access-Control-Allow-Origin", "*");
-
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-  next();
-
+app.use((req,res,next)=> {
+    res.setHeader("Access-Control-Allow-Origin",'*');
+    res.setHeader("Access-Control-Allow-Methods",'*');
+    res.setHeader("Access-Control-Allow-Headers",'*');
+    next();
 });
 app.get('/', (req, res) => {
     console.log("Here")
