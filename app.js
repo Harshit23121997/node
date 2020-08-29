@@ -30,7 +30,9 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 app.get('/orderDetails/:order_id',(req,res)=>{
-
+  res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'content-Type,x-requested-with');
   console.log(req.params.order_id)
   url='/admin/api/2020-07/orders.json?name='+req.params.order_id;
   console.log(url)
