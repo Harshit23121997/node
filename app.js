@@ -13,7 +13,7 @@ var jwks = require('jwks-rsa');
 const cors = require('cors');
 
 const corsOpts = {
-  origin: '*',
+  origin: 'http://15.207.137.254/',
 
   methods: [
     'GET',
