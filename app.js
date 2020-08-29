@@ -12,7 +12,20 @@ var jwt = require('jsonwebtoken');
 var jwks = require('jwks-rsa');
 const cors = require('cors');
 
-app.use(cors());
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
+app.use(cors(corsOpts));
 app.use(express.json())
 
 
@@ -24,12 +37,6 @@ var Shopify = new shopifyAPI({
     access_token: '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' // Your API password
 });
 app.use(bodyParser.json()); 
-app.use((req,res,next)=> {
-    res.setHeader("Access-Control-Allow-Origin",'*');
-    res.setHeader("Access-Control-Allow-Methods",'*');
-    res.setHeader("Access-Control-Allow-Headers",'*');
-    next();
-});
 app.get('/', (req, res) => {
     console.log("Here")
     
