@@ -12,20 +12,7 @@ var jwt = require('jsonwebtoken');
 var jwks = require('jwks-rsa');
 const cors = require('cors');
 
-const corsOpts = {
-  origin: 'http://15.207.137.254/',
-
-  methods: [
-    'GET',
-    'POST',
-  ],
-
-  allowedHeaders: [
-    'Content-Type',
-  ],
-};
-
-app.use(cors(corsOpts));
+app.use(cors());
 app.use(express.json())
 
 
@@ -42,43 +29,14 @@ app.get('/', (req, res) => {
     
     res.send('Hello World!');
 });
-app.get('/orderDetails/:order_id',(req,res)=>{
-  res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'content-Type,x-requested-with');
-  console.log(req.params.order_id)
-  url='/admin/api/2020-07/orders.json?name='+req.params.order_id;
-  console.log(url)
-  Shopify.get(url, function(err, data, headers){
-    if(err){
-        console.log(err)
-        res.send(" Error Here")
-        return ;
 
-    }
-    else{
-      console.log(data)
-      if(data.orders!=undefined && req.params.order_id.length==6)
-      {
-        if(data.orders[0].fulfillment_status)
-          res.send({"status":data.orders[0].fulfillment_status});
-        else
-          res.send({"status":"unfulfilled"})
-      }   
-      else{
-        res.send({"status":"Not Valid Order Number"})
-      }
-        
-      return;
-    }
-    
-  });
-  
-  return "Not here";
-});
+
 
 app.post('/postOrder/32250324058172',(req,res)=>{
-  
+  var string = req.body.customer_name;
+  string+=" NA"
+    string = string.split(" ");
+
   console.log(req.body)
   order_data={
       "order": {
@@ -90,12 +48,23 @@ app.post('/postOrder/32250324058172',(req,res)=>{
           }
         ],
         "customer":{
-          "first_name":req.body.customer_name,
-          "last_name":"NA"
+          "first_name":string[0],
+          "last_name":string[1]
+        },
+        "billing_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "address2": req.body.shipping_address_line2,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
         },
         "shipping_address": {
-          "first_name": req.body.customer_name,
-          "last_name": "",
+          "first_name": string[0],
+          "last_name": string[1],
           "address1":req.body.shipping_address_line1,
           "address2": req.body.shipping_address_line2,
           "phone": req.body.shipping_address_phone,
@@ -108,9 +77,14 @@ app.post('/postOrder/32250324058172',(req,res)=>{
         "fulfillment_status": "unfulfilled"
       }
     }
+
     const bearer=req.headers['authorization'];
     if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
       res.sendStatus(403)
+      return;
+    }
+    if(order_data.order.shipping_address){
+      res.send({"status":"Address Not Found"});
       return;
     }
   Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
@@ -125,10 +99,14 @@ app.post('/postOrder/32250324058172',(req,res)=>{
       }
       
     });
+  res.send({"status":"Success"});
   return;
 });
 
 app.post('/postOrder/32250224312380',(req,res)=>{
+  var string = req.body.customer_name;
+  string+=" NA"
+    string = string.split(" ");
   const bearer=req.headers['authorization'];
       if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
         res.sendStatus(403);
@@ -137,6 +115,7 @@ app.post('/postOrder/32250224312380',(req,res)=>{
   
     console.log(req.body)
     order_data={
+
         "order": {
           "line_items": [
             {
@@ -146,12 +125,23 @@ app.post('/postOrder/32250224312380',(req,res)=>{
             }
           ],
           "customer":{
-            "first_name":req.body.customer_name,
-            "last_name":"NA"
+            "first_name": string[0],
+          "last_name": string[1],
+          },
+          "billing_address": {
+            "first_name": string[0],
+          "last_name": string[1],
+            "address1":req.body.shipping_address_line1,
+            "address2": req.body.shipping_address_line2,
+            "phone": req.body.shipping_address_phone,
+            "city": req.body.shipping_address_city,
+            "province": req.body.shipping_address_state,
+            "country": "India",
+            "zip": req.body.shipping_address_pincode
           },
           "shipping_address": {
-            "first_name": req.body.customer_name,
-            "last_name": "NA",
+            "first_name": string[0],
+          "last_name": string[1],
             "address1":req.body.shipping_address_line1,
             "address2": req.body.shipping_address_line2,
             "phone": req.body.shipping_address_phone,
@@ -178,7 +168,9 @@ app.post('/postOrder/32250224312380',(req,res)=>{
     return;
 })
 
+
+
 const port=process.env.port||3000;
 app.listen(port, () => {
-    console.log('Example app listening on port'+port);
+    console.log('Example app listening port'+port);
 });
