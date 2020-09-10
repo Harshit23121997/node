@@ -36,8 +36,8 @@ app.post('/postOrder/32250324058172',(req,res)=>{
   var string = req.body.customer_name;
   string+=" NA"
     string = string.split(" ");
-
-  console.log(req.body)
+  var order_data;
+  console.log(req.body);
   order_data={
       "order": {
         "line_items": [
@@ -66,7 +66,6 @@ app.post('/postOrder/32250324058172',(req,res)=>{
           "first_name": string[0],
           "last_name": string[1],
           "address1":req.body.shipping_address_line1,
-          "address2": req.body.shipping_address_line2,
           "phone": req.body.shipping_address_phone,
           "city": req.body.shipping_address_city,
           "province": req.body.shipping_address_state,
@@ -114,6 +113,7 @@ app.post('/postOrder/32250224312380',(req,res)=>{
       }
   
     console.log(req.body)
+    var order_data;
     order_data={
 
         "order": {
@@ -132,7 +132,6 @@ app.post('/postOrder/32250224312380',(req,res)=>{
             "first_name": string[0],
           "last_name": string[1],
             "address1":req.body.shipping_address_line1,
-            "address2": req.body.shipping_address_line2,
             "phone": req.body.shipping_address_phone,
             "city": req.body.shipping_address_city,
             "province": req.body.shipping_address_state,
@@ -155,9 +154,9 @@ app.post('/postOrder/32250224312380',(req,res)=>{
         }
       }
       if(!order_data.order.shipping_address){
-        res.send({"status":"Address Not Found"});
-        return;
-      }
+      res.send({"status":"Address Not Found"});
+      return;
+    }
     Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data){
         if(!err){
           res.send({"status":"Success"});
