@@ -83,7 +83,7 @@ app.post('/postOrder/32250324058172',(req,res)=>{
       res.sendStatus(403)
       return;
     }
-    if(order_data.order.shipping_address){
+    if(!order_data.order.shipping_address){
       res.send({"status":"Address Not Found"});
       return;
     }
@@ -154,7 +154,10 @@ app.post('/postOrder/32250224312380',(req,res)=>{
           "fulfillment_status": "unfulfilled"
         }
       }
-      
+      if(!order_data.order.shipping_address){
+        res.send({"status":"Address Not Found"});
+        return;
+      }
     Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data){
         if(!err){
           res.send({"status":"Success"});
