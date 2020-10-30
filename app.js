@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
     console.log("Here")
     
-    res.send('Hello World!');
+    res.send('Hello World');
 });
 
 
