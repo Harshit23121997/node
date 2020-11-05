@@ -25,7 +25,7 @@ var Shopify = new shopifyAPI({
 });
 app.use(bodyParser.json()); 
 app.get('/', (req, res) => {
-    console.log("Here")
+    console.log("Her")
     
     res.send('Hello World');
 });
