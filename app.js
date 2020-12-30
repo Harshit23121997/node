@@ -172,6 +172,147 @@ app.post('/postOrder/32250324058172',(req,res)=>{
   return;
 });
 
+//Macadamia
+app.post('/postOrder/32675645980732',(req,res)=>{
+    var string = req.body.customer_name;
+    string+=" NA"
+      string = string.split(" ");
+    var order_data;
+    console.log(req.body);
+    order_data={
+        "order": {
+          "line_items": [
+            {
+              "variant_id": 32675645980732,
+              "price": req.body.order_sales_value,
+              "quantity":1
+            }
+          ],
+          "customer":{
+            "first_name":string[0],
+            "last_name":string[1]
+          },
+          "billing_address": {
+            "first_name": string[0],
+            "last_name": string[1],
+            "address1":req.body.shipping_address_line1,
+            "address2": req.body.shipping_address_line2,
+            "phone": req.body.shipping_address_phone,
+            "city": req.body.shipping_address_city,
+            "province": req.body.shipping_address_state,
+            "country": "India",
+            "zip": req.body.shipping_address_pincode
+          },
+          "shipping_address": {
+            "first_name": string[0],
+            "last_name": string[1],
+            "address1":req.body.shipping_address_line1,
+            "phone": req.body.shipping_address_phone,
+            "city": req.body.shipping_address_city,
+            "province": req.body.shipping_address_state,
+            "country": "India",
+            "zip": req.body.shipping_address_pincode
+          },
+          "email":req.body.shipping_address_email,
+          "fulfillment_status": "unfulfilled"
+        }
+      }
+  
+      const bearer=req.headers['authorization'];
+      if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+        res.sendStatus(403)
+        return;
+      }
+      if(!order_data.order.shipping_address){
+        res.send({"status":"Address Not Found"});
+        return;
+      }
+    Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
+        if(err){
+            console.log(err)
+            return;
+  
+        }
+        else{
+          res.send({"status":"Success"});
+        return;
+        }
+        
+      });
+    return;
+  });
+
+
+//E-luminance
+  app.post('/postOrder/32675646046268',(req,res)=>{
+    var string = req.body.customer_name;
+    string+=" NA"
+      string = string.split(" ");
+    var order_data;
+    console.log(req.body);
+    order_data={
+        "order": {
+          "line_items": [
+            {
+              "variant_id": 32675646046268,
+              "price": req.body.order_sales_value,
+              "quantity":1
+            }
+          ],
+          "customer":{
+            "first_name":string[0],
+            "last_name":string[1]
+          },
+          "billing_address": {
+            "first_name": string[0],
+            "last_name": string[1],
+            "address1":req.body.shipping_address_line1,
+            "address2": req.body.shipping_address_line2,
+            "phone": req.body.shipping_address_phone,
+            "city": req.body.shipping_address_city,
+            "province": req.body.shipping_address_state,
+            "country": "India",
+            "zip": req.body.shipping_address_pincode
+          },
+          "shipping_address": {
+            "first_name": string[0],
+            "last_name": string[1],
+            "address1":req.body.shipping_address_line1,
+            "phone": req.body.shipping_address_phone,
+            "city": req.body.shipping_address_city,
+            "province": req.body.shipping_address_state,
+            "country": "India",
+            "zip": req.body.shipping_address_pincode
+          },
+          "email":req.body.shipping_address_email,
+          "fulfillment_status": "unfulfilled"
+        }
+      }
+  
+      const bearer=req.headers['authorization'];
+      if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+        res.sendStatus(403)
+        return;
+      }
+      if(!order_data.order.shipping_address){
+        res.send({"status":"Address Not Found"});
+        return;
+      }
+    Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
+        if(err){
+            console.log(err)
+            return;
+  
+        }
+        else{
+          res.send({"status":"Success"});
+        return;
+        }
+        
+      });
+    return;
+  });
+
 app.post('/postOrder/32250224312380',(req,res)=>{
   var string = req.body.customer_name;
   string+=" NA"
