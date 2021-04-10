@@ -30,6 +30,282 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
+app.post('/postOrder/32612993892412',(req,res)=>{
+  var string = req.body.customer_name;
+  string+=" NA"
+    string = string.split(" ");
+  var order_data;
+  console.log(req.body);
+  order_data={
+      "order": {
+        "line_items": [
+          {
+            "variant_id": 32612993892412,
+            "price": req.body.order_sales_value,
+            "quantity":1
+          }
+        ],
+        "customer":{
+          "first_name":string[0],
+          "last_name":string[1]
+        },
+        "billing_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "address2": req.body.shipping_address_line2,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "shipping_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "email":req.body.shipping_address_email,
+        "fulfillment_status": "unfulfilled"
+      }
+    }
+
+    const bearer=req.headers['authorization'];
+    if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+      res.sendStatus(403)
+      return;
+    }
+    if(!order_data.order.shipping_address){
+      res.send({"status":"Address Not Found"});
+      return;
+    }
+  Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
+      if(err){
+          console.log(err)
+          return;
+
+      }
+      else{
+        res.send({"status":"Success"});
+      return;
+      }
+      
+    });
+  return;
+});
+
+app.post('/postOrder/31666071011388',(req,res)=>{
+  var string = req.body.customer_name;
+  string+=" NA"
+    string = string.split(" ");
+  var order_data;
+  console.log(req.body);
+  order_data={
+      "order": {
+        "line_items": [
+          {
+            "variant_id": 31666071011388,
+            "price": req.body.order_sales_value,
+            "quantity":1
+          }
+        ],
+        "customer":{
+          "first_name":string[0],
+          "last_name":string[1]
+        },
+        "billing_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "address2": req.body.shipping_address_line2,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "shipping_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "email":req.body.shipping_address_email,
+        "fulfillment_status": "unfulfilled"
+      }
+    }
+
+    const bearer=req.headers['authorization'];
+    if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+      res.sendStatus(403)
+      return;
+    }
+    if(!order_data.order.shipping_address){
+      res.send({"status":"Address Not Found"});
+      return;
+    }
+  Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
+      if(err){
+          console.log(err)
+          return;
+
+      }
+      else{
+        res.send({"status":"Success"});
+      return;
+      }
+      
+    });
+  return;
+});
+
+app.post('/postOrder/32684998656060',(req,res)=>{
+  var string = req.body.customer_name;
+  string+=" NA"
+    string = string.split(" ");
+  var order_data;
+  console.log(req.body);
+  order_data={
+      "order": {
+        "line_items": [
+          {
+            "variant_id": 32684998656060,
+            "price": req.body.order_sales_value,
+            "quantity":1
+          }
+        ],
+        "customer":{
+          "first_name":string[0],
+          "last_name":string[1]
+        },
+        "billing_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "address2": req.body.shipping_address_line2,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "shipping_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "email":req.body.shipping_address_email,
+        "fulfillment_status": "unfulfilled"
+      }
+    }
+
+    const bearer=req.headers['authorization'];
+    if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+      res.sendStatus(403)
+      return;
+    }
+    if(!order_data.order.shipping_address){
+      res.send({"status":"Address Not Found"});
+      return;
+    }
+  Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
+      if(err){
+          console.log(err)
+          return;
+
+      }
+      else{
+        res.send({"status":"Success"});
+      return;
+      }
+      
+    });
+  return;
+});
+
+app.post('/postOrder/32681190359100',(req,res)=>{
+  var string = req.body.customer_name;
+  string+=" NA"
+    string = string.split(" ");
+  var order_data;
+  console.log(req.body);
+  order_data={
+      "order": {
+        "line_items": [
+          {
+            "variant_id": 32681190359100,
+            "price": req.body.order_sales_value,
+            "quantity":1
+          }
+        ],
+        "customer":{
+          "first_name":string[0],
+          "last_name":string[1]
+        },
+        "billing_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "address2": req.body.shipping_address_line2,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "shipping_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "email":req.body.shipping_address_email,
+        "fulfillment_status": "unfulfilled"
+      }
+    }
+
+    const bearer=req.headers['authorization'];
+    if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+      res.sendStatus(403)
+      return;
+    }
+    if(!order_data.order.shipping_address){
+      res.send({"status":"Address Not Found"});
+      return;
+    }
+  Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
+      if(err){
+          console.log(err)
+          return;
+
+      }
+      else{
+        res.send({"status":"Success"});
+      return;
+      }
+      
+    });
+  return;
+});
+
 
 app.post('/postOrder/32584700330044',(req,res)=>{
   var string = req.body.customer_name;
@@ -100,6 +376,74 @@ app.post('/postOrder/32584700330044',(req,res)=>{
   return;
 });
 
+app.post('/postOrder/32036432642108',(req,res)=>{
+  var string = req.body.customer_name;
+  string+=" NA"
+    string = string.split(" ");
+  var order_data;
+  console.log(req.body);
+  order_data={
+      "order": {
+        "line_items": [
+          {
+            "variant_id": 32036432642108,
+            "price": req.body.order_sales_value,
+            "quantity":1
+          }
+        ],
+        "customer":{
+          "first_name":string[0],
+          "last_name":string[1]
+        },
+        "billing_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "address2": req.body.shipping_address_line2,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "shipping_address": {
+          "first_name": string[0],
+          "last_name": string[1],
+          "address1":req.body.shipping_address_line1,
+          "phone": req.body.shipping_address_phone,
+          "city": req.body.shipping_address_city,
+          "province": req.body.shipping_address_state,
+          "country": "India",
+          "zip": req.body.shipping_address_pincode
+        },
+        "email":req.body.shipping_address_email,
+        "fulfillment_status": "unfulfilled"
+      }
+    }
+
+    const bearer=req.headers['authorization'];
+    if(!bearer.includes(process.env.ACCESS_TOKEN_SECRET)){
+      res.sendStatus(403)
+      return;
+    }
+    if(!order_data.order.shipping_address){
+      res.send({"status":"Address Not Found"});
+      return;
+    }
+  Shopify.post('/admin/api/2020-07/orders.json', order_data, function(err, data, headers){
+      if(err){
+          console.log(err)
+          return;
+
+      }
+      else{
+        res.send({"status":"Success"});
+      return;
+      }
+      
+    });
+  return;
+});
 
 
 
